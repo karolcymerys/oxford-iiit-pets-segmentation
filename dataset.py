@@ -21,9 +21,9 @@ class PeopleClothingSegmentationDataset(Dataset):
     @staticmethod
     def __load_dataset(images_path: str, masks_path: str) -> Dict[int, Dict[str, str]]:
         dataset = list()
-        for img_filename in os.listdir(images_path):
-            id = img_filename.split('_')[1].split('.')[0]
-            seg_filename = f'seg_{id}.png'
+        for img_filename in list(sorted(os.listdir(images_path))):
+            idx = img_filename.split('_')[1].split('.')[0]
+            seg_filename = f'seg_{idx}.png'
             if os.path.isfile(os.path.join(masks_path, seg_filename)):
                 dataset.append({
                     'img': os.path.join(images_path, img_filename),

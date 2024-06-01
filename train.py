@@ -1,4 +1,4 @@
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Subset
 from torchvision import transforms
 
 from dataset import PeopleClothingSegmentationDataset
@@ -19,10 +19,14 @@ if __name__ == '__main__':
         common_transforms
 
     )
-    dataloader = DataLoader(dataset, batch_size=64, num_workers=4, shuffle=True)
+    train_set = Subset(dataset, [idx for idx in range(len(dataset)) if idx % 10 != 0])
+    validation_set = Subset(dataset, [idx for idx in range(len(dataset)) if idx % 10 == 0])
+
+    train_data_loader = DataLoader(train_set, batch_size=64, shuffle=True)
+    validation_data_loader = DataLoader(validation_set, batch_size=16)
     num_labels = len(dataset.idx2label)
     model = SegNet(num_labels)
     model.init_weights()
     model = model.to(DEVICE)
 
-    model = train(model, dataloader, num_labels, device=DEVICE)
+    model = train(model, train_data_loader, validation_data_loader, num_labels, device=DEVICE)
