@@ -2,6 +2,7 @@ import os
 from typing import Tuple, Iterator, Callable
 
 import torch
+from torch import softmax
 from torch.utils.data import DataLoader
 from torchvision import transforms
 
@@ -19,7 +20,7 @@ def test(model: SegNet,
         imgs = batch[0].to(device)
 
         outputs = model(custom_transforms(imgs))
-        masks = outputs.argmax(dim=1).unsqueeze(dim=1)
+        masks = softmax(outputs, dim=1).argmax(dim=1).unsqueeze(dim=1)
 
         resize = transforms.Resize(imgs.shape[2:])
 

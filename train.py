@@ -1,22 +1,18 @@
 from torch.utils.data import DataLoader, Subset
-from torchvision import transforms
 
 from dataset import PeopleClothingSegmentationDataset
 from segnet.model import SegNet
 from segnet.train import train
+from transforms import CustomTransforms
 
 DEVICE = 'cuda:0'
 
 if __name__ == '__main__':
-    common_transforms = transforms.Compose([
-        transforms.Resize((128, 128))
-    ])
-
     dataset = PeopleClothingSegmentationDataset(
         './dataset/png_images/IMAGES/',
         './dataset/png_masks/MASKS',
         './dataset/labels.csv',
-        common_transforms
+        CustomTransforms()
 
     )
     train_set = Subset(dataset, [idx for idx in range(len(dataset)) if idx % 10 != 0])

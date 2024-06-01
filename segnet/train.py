@@ -19,7 +19,7 @@ def train(model: SegNet,
           epochs: int = 100,
           learning_rate: float = 3e-4,
           device: str = 'cpu') -> SegNet:
-    optimizer = Adam(model.train_parameters(), lr=learning_rate)
+    optimizer = Adam(model.parameters(), lr=learning_rate)
     loss_fn = CrossEntropyLoss()
 
     epoch_losses = []

@@ -41,7 +41,7 @@ class PeopleClothingSegmentationDataset(Dataset):
         img = to_tensor(Image.open(item['img']))
         mask = pil_to_tensor(Image.open(item['mask']))
 
-        return self.transforms(img), self.transforms(mask)
+        return self.transforms(img, mask)
 
     def __len__(self):
         return len(self.dataset)
