@@ -1,6 +1,7 @@
 from torch.utils.data import DataLoader, Subset
 
 from dataset import PeopleClothingSegmentationDataset
+from loss_functions import CustomCrossEntropyLoss
 from segnet.modelv2 import SegNet
 from segnet.train import train
 from transforms import CustomTransforms
@@ -32,4 +33,11 @@ if __name__ == '__main__':
     model.init_weights()
     model = model.to(DEVICE)
 
-    model = train(model, train_data_loader, validation_data_loader, num_labels, device=DEVICE)
+    model = train(
+        model,
+        train_data_loader,
+        validation_data_loader,
+        num_labels,
+        CustomCrossEntropyLoss(num_labels),
+        device=DEVICE
+    )

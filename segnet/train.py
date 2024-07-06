@@ -2,7 +2,6 @@ import os
 
 import numpy as np
 import torch
-from torch.nn import CrossEntropyLoss
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 from tqdm import tqdm
@@ -16,15 +15,15 @@ def train(model: SegNet,
           train_data_loader: DataLoader,
           validation_data_loader: DataLoader,
           num_labels: int,
+          loss_fn: torch.nn.Module,
           epochs: int = 100,
           learning_rate: float = 3e-4,
           device: str = 'cpu') -> SegNet:
     optimizer = Adam(model.parameters(), lr=learning_rate)
-    loss_fn = CrossEntropyLoss()
 
     epoch_losses = []
     for epoch in range(1, epochs + 1):
-        train_epoch_loss = __train(model, train_data_loader, num_labels, optimizer, loss_fn, device)
+        train_epoch_loss = __train(model, train_data_loader, optimizer, loss_fn, device)
         validation_data_loss = __validate(model, validation_data_loader, num_labels, loss_fn, device)
         print(f'[{epoch}/{epochs}]\tTrain epoch loss: {train_epoch_loss}\tValidation epoch loss: {validation_data_loss}')
 
@@ -40,7 +39,6 @@ def train(model: SegNet,
 
 def __train(model: SegNet,
             data_loader: DataLoader,
-            num_labels: int,
             optimizer,
             loss_fn,
             device: str = 'cpu') -> float:
@@ -51,8 +49,6 @@ def __train(model: SegNet,
             imgs, targets = batch[0].to(device), batch[1].to(device)
 
             outputs = model(imgs)
-            outputs = outputs.permute(0, 2, 3, 1).reshape(-1, num_labels)
-            targets = targets.reshape(-1)
 
             optimizer.zero_grad()
             loss = loss_fn(outputs, targets)
