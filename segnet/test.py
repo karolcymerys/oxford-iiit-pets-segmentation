@@ -24,5 +24,4 @@ def test(model: SegNet,
 
         resize = transforms.Resize(imgs.shape[2:])
 
-        for idx in range(imgs.shape[0]):
-            yield imgs[idx, :, :, :].cpu(), resize(masks[idx, :, :]).cpu()
+        yield imgs.cpu(), resize(masks).cpu()
