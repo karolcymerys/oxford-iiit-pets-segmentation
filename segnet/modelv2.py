@@ -34,15 +34,11 @@ class SegNetEncoderBlock(nn.Module):
         for _ in range(sub_layers_num - 1):
             layers.extend(
                 build_encoder_sub_layer(output_channels, output_channels, conv_kernel_size, conv_padding))
-
+        layers.append(nn.MaxPool2d(pooling_kernel_size, pooling_kernel_size, pooling_padding))
         self.layers = nn.Sequential(*layers)
-        self.pooling = nn.MaxPool2d(pooling_kernel_size, pooling_kernel_size, pooling_padding, return_indices=True)
 
-    def forward(self, features: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor, torch.Size]:
-        block_output = self.layers(features)
-        shape = block_output.shape
-        block_output, indices = self.pooling(block_output)
-        return block_output, indices, shape
+    def forward(self, features: torch.Tensor) -> Tuple[torch.Tensor]:
+        return self.layers(features)
 
 
 class SegNetDecoderBlock(nn.Module):
@@ -52,17 +48,16 @@ class SegNetDecoderBlock(nn.Module):
                  sub_layers_num: int,
                  conv_kernel_size: Tuple[int, int] = (3, 3),
                  conv_padding: Tuple[int, int] = (1, 1),
-                 unpooling_kernel_size: Tuple[int, int] = (2, 2),
-                 unpooling_padding: Tuple[int, int] = (0, 0)) -> None:
+                 transpose_kernel_size: Tuple[int, int] = (2, 2),
+                 transpose_padding: Tuple[int, int] = (0, 0)) -> None:
         super(SegNetDecoderBlock, self).__init__()
 
-        layers = list()
+        layers = [nn.ConvTranspose2d(input_channels, input_channels, transpose_kernel_size, transpose_kernel_size, transpose_padding)]
         for _ in range(sub_layers_num - 1):
             layers.extend(
                 build_encoder_sub_layer(input_channels, input_channels, conv_kernel_size, conv_padding))
         layers.extend(build_encoder_sub_layer(input_channels, output_channels, conv_kernel_size, conv_padding))
 
-        self.unpooling = nn.MaxUnpool2d(unpooling_kernel_size, unpooling_kernel_size, unpooling_padding)
         self.layers = nn.Sequential(*layers)
 
     def init_weights(self) -> None:
@@ -70,9 +65,8 @@ class SegNetDecoderBlock(nn.Module):
             if isinstance(layer, nn.Conv2d):
                 layer.weight.data.uniform_(-1 / math.sqrt(layer.out_channels), 1 / math.sqrt(layer.out_channels))
 
-    def forward(self, features: torch.Tensor, indices: torch.Tensor, shape: torch.Size) -> torch.Tensor:
-        unpooled = self.unpooling(features, indices, output_size=shape)
-        return self.layers(unpooled)
+    def forward(self, features: torch.Tensor) -> torch.Tensor:
+        return self.layers(features)
 
 
 class SegNet(nn.Module):
@@ -129,14 +123,14 @@ class SegNet(nn.Module):
         ]
 
     def forward(self, features: torch.Tensor) -> torch.Tensor:
-        e_output_1, e_indices_1, e_shape_1 = self.encoder_layer_1(features)
-        e_output_2, e_indices_2, e_shape_2 = self.encoder_layer_2(e_output_1)
-        e_output_3, e_indices_3, e_shape_3 = self.encoder_layer_3(e_output_2)
-        e_output_4, e_indices_4, e_shape_4 = self.encoder_layer_4(e_output_3)
-        e_output_5, e_indices_5, e_shape_5 = self.encoder_layer_5(e_output_4)
+        e_output_1 = self.encoder_layer_1(features)
+        e_output_2 = self.encoder_layer_2(e_output_1)
+        e_output_3 = self.encoder_layer_3(e_output_2)
+        e_output_4 = self.encoder_layer_4(e_output_3)
+        e_output_5 = self.encoder_layer_5(e_output_4)
 
-        d_output_1 = self.decoder_layer_1(e_output_5, e_indices_5, e_shape_5)
-        d_output_2 = self.decoder_layer_2(d_output_1, e_indices_4, e_shape_4)
-        d_output_3 = self.decoder_layer_3(d_output_2, e_indices_3, e_shape_3)
-        d_output_4 = self.decoder_layer_4(d_output_3, e_indices_2, e_shape_2)
-        return self.decoder_layer_5(d_output_4, e_indices_1, e_shape_1)
+        d_output_1 = self.decoder_layer_1(e_output_5)
+        d_output_2 = self.decoder_layer_2(d_output_1 + e_output_4)
+        d_output_3 = self.decoder_layer_3(d_output_2 + e_output_3)
+        d_output_4 = self.decoder_layer_4(d_output_3 + e_output_2)
+        return self.decoder_layer_5(d_output_4 + e_output_1)

@@ -1,5 +1,5 @@
 import random
-from typing import Tuple, List
+from typing import Tuple
 
 import torchvision.transforms.functional as TF
 from torchvision import transforms
@@ -52,15 +52,5 @@ class CustomTransforms:
         if self.sharpness_adjustment and random.random() > 0.5:
             factor = random.randrange(0, 3)
             objs = tuple([TF.adjust_sharpness(objs[0], factor), *objs[1:]])
-
-        # Random contrast adjustment
-        #if random.random() > 0.5:
-        #    factor = random.randrange(0, 3)
-        #    objs = tuple([TF.adjust_contrast(objs[0], factor), *objs[1:]])
-
-        # Random saturation adjustment
-        #if random.random() > 0.5:
-        #    factor = random.randrange(0, 3)
-        #    objs = tuple([TF.adjust_saturation(objs[0], factor), *objs[1:]])
 
         return objs
