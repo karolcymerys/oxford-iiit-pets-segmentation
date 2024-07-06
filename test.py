@@ -5,7 +5,7 @@ from torchvision import transforms
 from dataset import PeopleClothingSegmentationDataset
 from segnet.model import SegNet
 from segnet.test import test
-from transforms import CustomResizeTransforms
+from transforms import CustomTransforms
 from utils import plot_with_masks
 
 DEVICE = 'cuda:0'
@@ -19,7 +19,7 @@ if __name__ == '__main__':
         './dataset/png_images/IMAGES/',
         './dataset/png_masks/MASKS',
         './dataset/labels.csv',
-        CustomResizeTransforms()
+        CustomTransforms(resize_size=(128, 128))
     )
     test_set = Subset(dataset, [idx for idx in range(len(dataset)) if idx % 10 == 0])
 

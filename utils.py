@@ -4,8 +4,9 @@ from torchvision.transforms.functional import to_pil_image
 
 
 def plot_with_masks(img: torch.Tensor, masks: torch.Tensor, num_labels: int) -> None:
-    plt.figure()
-    plt.imshow(to_pil_image(img))
+    fig, (ax1, ax2) = plt.subplots(1, 2)
+    ax1.imshow(to_pil_image(img))
+    ax2.imshow(to_pil_image(img))
 
     cm = plt.get_cmap('gist_rainbow')
 
@@ -19,7 +20,6 @@ def plot_with_masks(img: torch.Tensor, masks: torch.Tensor, num_labels: int) -> 
             final_mask[2, :, :] = mask * c[2]
             final_mask[3, :, :] = 0.5 * (mask > 0)
 
-            plt.imshow(to_pil_image(final_mask))
-
+            ax1.imshow(to_pil_image(final_mask))
 
     plt.show()
