@@ -1,7 +1,7 @@
 from torch.utils.data import DataLoader, Subset
 
 from dataset import PeopleClothingSegmentationDataset
-from loss_functions import CustomCrossEntropyLoss, DiceLoss
+from loss_functions import CrossEntropyLossWrapper, DiceLoss
 from segnet.modelv2 import SegNet
 from segnet.train import train
 from transforms import CustomTransforms

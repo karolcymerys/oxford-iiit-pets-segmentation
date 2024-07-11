@@ -6,8 +6,6 @@ from torch.nn import Parameter
 from torchvision import models
 from torchvision.models import VGG16_Weights
 
-# https://www.kaggle.com/code/robinreni/pytorch-segnet-deeplabv3-training
-
 
 def build_encoder_sub_layer(input_channels: int,
                             output_channels: int,
