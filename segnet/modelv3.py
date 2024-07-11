@@ -59,11 +59,13 @@ class SegNetDecoderBlock(nn.Module):
                  transpose_padding: Tuple[int, int] = (0, 0)) -> None:
         super(SegNetDecoderBlock, self).__init__()
 
+        mid_channels = input_channels // 2
         layers = [nn.ConvTranspose2d(input_channels, input_channels, transpose_kernel_size, transpose_kernel_size, transpose_padding)]
-        for _ in range(sub_layers_num - 1):
+        layers.extend(build_encoder_sub_layer(input_channels, mid_channels, conv_kernel_size, conv_padding))
+        for _ in range(sub_layers_num - 2):
             layers.extend(
-                build_encoder_sub_layer(input_channels, input_channels, conv_kernel_size, conv_padding))
-        layers.extend(build_encoder_sub_layer(input_channels, output_channels, conv_kernel_size, conv_padding))
+                build_encoder_sub_layer(mid_channels, mid_channels, conv_kernel_size, conv_padding))
+        layers.extend(build_encoder_sub_layer(mid_channels, output_channels, conv_kernel_size, conv_padding))
 
         self.layers = nn.Sequential(*layers)
 
@@ -92,10 +94,10 @@ class SegNet(nn.Module):
         self.encoder_layer_5 = SegNetEncoderBlock(512, 512, 3)
 
         self.decoder_layer_1 = SegNetDecoderBlock(512, 512, 3)
-        self.decoder_layer_2 = SegNetDecoderBlock(512, 256, 3)
-        self.decoder_layer_3 = SegNetDecoderBlock(256, 128, 3)
-        self.decoder_layer_4 = SegNetDecoderBlock(128, 64, 2)
-        self.decoder_layer_5 = SegNetDecoderBlock(64, num_labels, 2)
+        self.decoder_layer_2 = SegNetDecoderBlock(1024, 256, 3)
+        self.decoder_layer_3 = SegNetDecoderBlock(512, 128, 3)
+        self.decoder_layer_4 = SegNetDecoderBlock(256, 64, 2)
+        self.decoder_layer_5 = SegNetDecoderBlock(128, num_labels, 2)
 
     def init_weights(self) -> None:
         with torch.no_grad():
@@ -147,7 +149,7 @@ class SegNet(nn.Module):
         e_output_5 = self.encoder_layer_5(e_output_4)
 
         d_output_1 = self.decoder_layer_1(e_output_5)
-        d_output_2 = self.decoder_layer_2(d_output_1 + e_output_4)
-        d_output_3 = self.decoder_layer_3(d_output_2 + e_output_3)
-        d_output_4 = self.decoder_layer_4(d_output_3 + e_output_2)
-        return self.decoder_layer_5(d_output_4 + e_output_1)
+        d_output_2 = self.decoder_layer_2(torch.cat([d_output_1, e_output_4], dim=1))
+        d_output_3 = self.decoder_layer_3(torch.cat([d_output_2, e_output_3], dim=1))
+        d_output_4 = self.decoder_layer_4(torch.cat([d_output_3, e_output_2], dim=1))
+        return self.decoder_layer_5(torch.cat([d_output_4, e_output_1], dim=1))

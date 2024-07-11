@@ -12,21 +12,21 @@ DEVICE = 'cuda:0'
 
 if __name__ == '__main__':
     common_transforms = transforms.Compose([
-        transforms.Resize((256, 256))
+        transforms.Resize((224, 224))
     ])
 
     dataset = PeopleClothingSegmentationDataset(
         './dataset/png_images/IMAGES/',
         './dataset/png_masks/MASKS',
         './dataset/labels.csv',
-        CustomTransforms(resize_size=(256, 256))
+        CustomTransforms(resize_size=(224, 224))
     )
     test_set = Subset(dataset, [idx for idx in range(len(dataset)) if idx % 10 == 0])
 
     data_loader = DataLoader(test_set, batch_size=16)
     num_labels = len(dataset.idx2label)
     model = SegNet(num_labels).to(DEVICE)
-    model.load_state_dict(torch.load('segnet/weights/seg_net_weights_5_cross_entropy.pth'))
+    # model.load_state_dict(torch.load('./segnet/weights/seg_net_v2_weights_20_dice_loss.pth'))
 
     for img, masks in test(model, data_loader, common_transforms, device=DEVICE):
         plot_with_masks(img, masks, num_labels)

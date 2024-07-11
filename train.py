@@ -1,7 +1,7 @@
 from torch.utils.data import DataLoader, Subset
 
 from dataset import PeopleClothingSegmentationDataset
-from loss_functions import CustomCrossEntropyLoss
+from loss_functions import CustomCrossEntropyLoss, DiceLoss
 from segnet.modelv2 import SegNet
 from segnet.train import train
 from transforms import CustomTransforms
@@ -15,9 +15,9 @@ if __name__ == '__main__':
         './dataset/png_masks/MASKS',
         './dataset/labels.csv',
         CustomTransforms(
-            crop_size=(384, 384),
-            resize_size=(256, 256),
-            rotation_angle=30,
+            crop_size=(256, 256),
+            resize_size=(224, 224),
+            rotation_angle=15,
             horizontal_flip=True,
             brightness_adjustment=True,
             sharpness_adjustment=True
@@ -37,7 +37,6 @@ if __name__ == '__main__':
         model,
         train_data_loader,
         validation_data_loader,
-        num_labels,
-        CustomCrossEntropyLoss(num_labels),
+        DiceLoss(), # CustomCrossEntropyLoss()
         device=DEVICE
     )

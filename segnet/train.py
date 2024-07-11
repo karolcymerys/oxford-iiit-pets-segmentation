@@ -14,22 +14,21 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 def train(model: SegNet,
           train_data_loader: DataLoader,
           validation_data_loader: DataLoader,
-          num_labels: int,
           loss_fn: torch.nn.Module,
           epochs: int = 100,
-          learning_rate: float = 3e-4,
+          learning_rate: float = 1e-4,
           device: str = 'cpu') -> SegNet:
     optimizer = Adam(model.parameters(), lr=learning_rate)
 
     epoch_losses = []
     for epoch in range(1, epochs + 1):
         train_epoch_loss = __train(model, train_data_loader, optimizer, loss_fn, device)
-        validation_data_loss = __validate(model, validation_data_loader, num_labels, loss_fn, device)
+        validation_data_loss = __validate(model, validation_data_loader, loss_fn, device)
         print(f'[{epoch}/{epochs}]\tTrain epoch loss: {train_epoch_loss}\tValidation epoch loss: {validation_data_loss}')
 
-        torch.save(model.state_dict(), os.path.join(dir_path, 'weights', f'seg_net_weights_{epoch}.pth'))
+        torch.save(model.state_dict(), os.path.join(dir_path, 'weights', f'seg_net_v2_weights_{epoch}_dice_loss.pth'))
 
-        if epoch > 3 and np.mean(epoch_losses[-3:]) < validation_data_loss:
+        if epoch > 10 and np.mean(epoch_losses[-5:]) < validation_data_loss:
             print('Overfitting detected. Stopping training...')
             return model
 
@@ -66,7 +65,6 @@ def __train(model: SegNet,
 
 def __validate(model: SegNet,
                data_loader: DataLoader,
-               num_labels: int,
                loss_fn,
                device: str = 'cpu') -> float:
     model = model.eval()
@@ -76,8 +74,6 @@ def __validate(model: SegNet,
             imgs, targets = batch[0].to(device), batch[1].to(device)
 
             outputs = model(imgs)
-            outputs = outputs.permute(0, 2, 3, 1).reshape(-1, num_labels)
-            targets = targets.reshape(-1)
 
             loss = loss_fn(outputs, targets)
 
