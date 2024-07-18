@@ -1,32 +1,28 @@
-import torch
-from torch.utils.data import DataLoader, Subset
-from torchvision import transforms
+from torch.utils.data import DataLoader
+from torchvision.datasets import OxfordIIITPet
 
-from dataset import PeopleClothingSegmentationDataset
+import transforms
 from segnet.modelv2 import SegNet
 from segnet.test import test
-from transforms import CustomTransforms
 from utils import plot_with_masks
 
 DEVICE = 'cuda:0'
 
 if __name__ == '__main__':
-    common_transforms = transforms.Compose([
-        transforms.Resize((224, 224))
-    ])
-
-    dataset = PeopleClothingSegmentationDataset(
-        './dataset/png_images/IMAGES/',
-        './dataset/png_masks/MASKS',
-        './dataset/labels.csv',
-        CustomTransforms(resize_size=(224, 224))
+    dataset = OxfordIIITPet(
+        root='./data',
+        transforms=transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor()
+        ]),
+        target_types='segmentation',
+        split='test'
     )
-    test_set = Subset(dataset, [idx for idx in range(len(dataset)) if idx % 10 == 0])
 
-    data_loader = DataLoader(test_set, batch_size=16)
-    num_labels = len(dataset.idx2label)
+    data_loader = DataLoader(dataset, batch_size=16)
+    num_labels = len(dataset.class_to_idx)
     model = SegNet(num_labels).to(DEVICE)
     # model.load_state_dict(torch.load('./segnet/weights/seg_net_v2_weights_20_dice_loss.pth'))
 
-    for img, masks in test(model, data_loader, common_transforms, device=DEVICE):
+    for img, masks in test(model, data_loader, device=DEVICE):
         plot_with_masks(img, masks, num_labels)

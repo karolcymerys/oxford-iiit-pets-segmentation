@@ -35,9 +35,9 @@ class IOULoss(torch.nn.Module):
         preds = logits.log_softmax(dim=1).exp()
 
         predicted_labels = preds.view(bs, num_classes, -1)
-        know_labels = torch.nn.functional.one_hot(targets.view(bs, -1).long(), num_classes).permute(0, 2, 1)
+        known_labels = torch.nn.functional.one_hot(targets.view(bs, -1).long(), num_classes).permute(0, 2, 1)
 
-        intersection = torch.logical_and(predicted_labels, know_labels).sum()
-        union = torch.logical_or(predicted_labels, know_labels).sum()
+        intersection = (predicted_labels * known_labels).sum()
+        union = (predicted_labels + known_labels).sum()
 
         return (2.0 * intersection + self.epsilon) / (union + self.epsilon)

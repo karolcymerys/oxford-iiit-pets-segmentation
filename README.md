@@ -29,3 +29,4 @@ pip install -r requirements.txt
 
 [[1] People Clothing Segmentation Dataset](https://www.kaggle.com/datasets/rajkumarl/people-clothing-segmentation/data)  
 [[2] Efficient Image Segmentation Using PyTorch](https://towardsdatascience.com/efficient-image-segmentation-using-pytorch-part-1-89e8297a0923)
+[[3] The Oxford-IIIT Pet Dataset](https://www.robots.ox.ac.uk/~vgg/data/pets/)
