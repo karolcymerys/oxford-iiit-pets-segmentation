@@ -7,7 +7,7 @@ from segnet.modelv2 import SegNet
 from segnet.train import train
 
 DEVICE = 'cuda:0'
-BATCH_SIZE = 24
+BATCH_SIZE = 32
 
 if __name__ == '__main__':
     dataset = OxfordIIITPet(
@@ -15,7 +15,7 @@ if __name__ == '__main__':
         transforms=transforms.Compose([
             transforms.Resize((224, 224)),
             transforms.RandomHorizontalFlip(),
-            transforms.RandomRotation(30),
+            transforms.RandomRotation(15),
             transforms.ToTensor()
         ]),
         target_types='segmentation',
@@ -36,5 +36,6 @@ if __name__ == '__main__':
         train_data_loader,
         validation_data_loader,
         DiceLoss(),  # CustomCrossEntropyLoss()
+        'dice_loss_oxford',
         device=DEVICE
     )

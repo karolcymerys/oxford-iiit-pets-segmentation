@@ -39,13 +39,13 @@ In order to initialize layers of the encoder, weights of pretrained _VGG16_ mode
 
 ## Experiments
 
-In order to compare performance of above implementations. There was utilized __People Clothing Segmentation Dataset__.
+In order to compare performance of above implementations. There was utilized __Oxford III-T Pets__.
 As a metric mean Intersection over Union (mIOU) was utilized. Models are compared on validation sets:
 
 | __Loss Function__  | __SegNet V1__ | __SegNet V2__ | __SegNet V3__ |
 |--------------------|---------------|---------------|---------------| 
 | Cross-entropy Loss | N/A           | N/A           | N/A           | 
-| Dice Loss          | 0.0879        | 0.1166        | 0.1066        |
+| Dice Loss          | N/A           | 0.2028        | N/A           |
 
 
 ## References

@@ -15,6 +15,7 @@ def train(model: SegNet,
           train_data_loader: DataLoader,
           validation_data_loader: DataLoader,
           loss_fn: torch.nn.Module,
+          model_suffix: str,
           epochs: int = 100,
           learning_rate: float = 1e-4,
           device: str = 'cpu') -> SegNet:
@@ -26,7 +27,7 @@ def train(model: SegNet,
         validation_data_loss = __validate(model, validation_data_loader, loss_fn, device)
         print(f'[{epoch}/{epochs}]\tTrain epoch loss: {train_epoch_loss}\tValidation epoch loss: {validation_data_loss}')
 
-        torch.save(model.state_dict(), os.path.join(dir_path, 'weights', f'seg_net_v2_weights_{epoch}_dice_loss.pth'))
+        torch.save(model.state_dict(), os.path.join(dir_path, 'weights', f'seg_net_v2_weights_{epoch}_{model_suffix}.pth'))
 
         if epoch > 10 and np.mean(epoch_losses[-5:]) < validation_data_loss:
             print('Overfitting detected. Stopping training...')

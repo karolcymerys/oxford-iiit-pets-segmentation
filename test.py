@@ -1,3 +1,4 @@
+import torch
 from torch.utils.data import DataLoader
 from torchvision.datasets import OxfordIIITPet
 
@@ -22,7 +23,7 @@ if __name__ == '__main__':
     data_loader = DataLoader(dataset, batch_size=16)
     num_labels = len(dataset.class_to_idx)
     model = SegNet(num_labels).to(DEVICE)
-    # model.load_state_dict(torch.load('./segnet/weights/seg_net_v2_weights_20_dice_loss.pth'))
+    # model.load_state_dict(torch.load('./segnet/weights/seg_net_v2_weights_23_dice_loss_oxford.pth'))
 
     for img, masks in test(model, data_loader, device=DEVICE):
         plot_with_masks(img, masks, num_labels)
