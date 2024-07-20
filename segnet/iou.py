@@ -12,7 +12,7 @@ DEVICE = 'cuda:0'
 
 if __name__ == '__main__':
     dataset = OxfordIIITPet(
-        root='./data',
+        root='../data',
         transforms=transforms.Compose([
             transforms.Resize((224, 224)),
             transforms.ToTensor()
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     data_loader = DataLoader(dataset, batch_size=16)
     num_labels = len(dataset.class_to_idx)
     model = SegNet(num_labels).to(DEVICE)
-    # model.load_state_dict(torch.load('./segnet/weights/seg_net_v2_weights_20_dice_loss.pth'))
+    model.load_state_dict(torch.load('./weights/seg_net_weights_36_v1_dice_loss_oxford.pth'))
 
     model = model.eval()
     loss_fn = IOULoss()
