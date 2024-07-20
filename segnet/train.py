@@ -17,9 +17,9 @@ def train(model: SegNet,
           loss_fn: torch.nn.Module,
           model_suffix: str,
           epochs: int = 100,
-          learning_rate: float = 1e-4,
+          learning_rate: float = 1e-2,
           device: str = 'cpu') -> SegNet:
-    optimizer = SGD(model.parameters(), lr=learning_rate, momentum=0.99, weight_decay=1e-4)
+    optimizer = SGD(model.parameters(), lr=learning_rate, momentum=0.9, weight_decay=1e-4)
 
     epoch_losses = []
     for epoch in range(1, epochs + 1):
