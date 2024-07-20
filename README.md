@@ -1,4 +1,4 @@
-# People clothing segmentation
+# Oxford III-T Pets Segmentation
 
 
 ## Try it yourself
@@ -11,7 +11,7 @@
 #### Clone repository
 
 ```shell
-git clone https://github.com/karolcymerys/people-clothing-segmentation.git
+git clone https://github.com/karolcymerys/oxfort-iiit-pets-segmentation.git
 ```
 
 #### Install Python dependencies
@@ -20,13 +20,7 @@ git clone https://github.com/karolcymerys/people-clothing-segmentation.git
 pip install -r requirements.txt
 ```
 
-#### Download dataset with annotations
-
-- [People Clothing Segmentation Dataset](https://www.kaggle.com/datasets/rajkumarl/people-clothing-segmentation/data)
-
-
 ## References
 
-[[1] People Clothing Segmentation Dataset](https://www.kaggle.com/datasets/rajkumarl/people-clothing-segmentation/data)  
+[[1] The Oxford-IIIT Pet Dataset](https://www.robots.ox.ac.uk/~vgg/data/pets/)
 [[2] Efficient Image Segmentation Using PyTorch](https://towardsdatascience.com/efficient-image-segmentation-using-pytorch-part-1-89e8297a0923)
-[[3] The Oxford-IIIT Pet Dataset](https://www.robots.ox.ac.uk/~vgg/data/pets/)
