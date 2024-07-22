@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 import transforms
 from loss_functions import IOULoss
-from segnet.modelv2 import SegNet
+from segnet.model import SegNet
 
 DEVICE = 'cuda:0'
 
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     data_loader = DataLoader(dataset, batch_size=16)
     num_labels = len(dataset.class_to_idx)
     model = SegNet(num_labels).to(DEVICE)
-    model.load_state_dict(torch.load('./weights/seg_net_weights_36_v1_dice_loss_oxford.pth'))
+    model.load_state_dict(torch.load('./weights/seg_net_weights_25_v1_cross_entropy_loss_oxford.pth'))
 
     model = model.eval()
     loss_fn = IOULoss()

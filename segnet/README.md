@@ -44,7 +44,7 @@ As a metric mean Intersection over Union (mIOU) was utilized. Models are compare
 
 | __Loss Function__  | __SegNet V1__ | __SegNet V2__ | __SegNet V3__ |
 |--------------------|---------------|---------------|---------------| 
-| Cross-entropy Loss | N/A           | N/A           | N/A           | 
+| Cross-entropy Loss | 0.8736        | N/A           | N/A           | 
 | Dice Loss          | 0.8904        | N/A           | N/A           |
 
 Training procedure:  
@@ -52,7 +52,7 @@ Training procedure:
 - __Learning rate:__ 1e-2
 - __Momentum:__ 0.9
 - __Weight decay:__ 1e-4
-- __Batch size:__ 36
+- __Batch size:__ 40
 
 ## References
 ___
