@@ -7,7 +7,6 @@ from tqdm import tqdm
 import transforms
 from loss_functions import IOULoss
 from unet.model import Unet
-from unet.utils import crop
 
 DEVICE = 'cuda:0'
 
@@ -37,7 +36,7 @@ if __name__ == '__main__':
             targets = batch[1].to(DEVICE)
             outputs = model(imgs)
 
-            loss = loss_fn(outputs, crop(targets, outputs.shape))
+            loss = loss_fn(outputs, targets)
             ious.append(loss.item())
 
             samples.set_postfix({'Batch mIOU': loss.item()})

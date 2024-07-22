@@ -26,10 +26,10 @@ class ContractingBlock(nn.Module):
         if apply_max_pooling:
             self.pooling = nn.MaxPool2d(kernel_size=pooling_kernel_size, stride=pooling_kernel_size)
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
         output = self.block(x)
 
-        return self.pooling(output) if self.apply_max_pooling else output
+        return self.pooling(output) if self.apply_max_pooling else output, output
 
     def init_weights(self) -> None:
         for layer in self.block:
@@ -94,16 +94,16 @@ class Unet(nn.Module):
         self.classifier = nn.Conv2d(64, num_labels, kernel_size=(1, 1), padding=(0, 0))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        cb1_output = self.contracting_block_1(x)
-        cb2_output = self.contracting_block_2(cb1_output)
-        cb3_output = self.contracting_block_3(cb2_output)
-        cb4_output = self.contracting_block_4(cb3_output)
-        cb5_output = self.contracting_block_5(cb4_output)
+        cb1_output, cb1_output_copy = self.contracting_block_1(x)
+        cb2_output, cb2_output_copy = self.contracting_block_2(cb1_output)
+        cb3_output, cb3_output_copy = self.contracting_block_3(cb2_output)
+        cb4_output, cb4_output_copy = self.contracting_block_4(cb3_output)
+        cb5_output, _ = self.contracting_block_5(cb4_output)
 
-        eb1_output = self.expansive_block_1(cb5_output, cb4_output)
-        eb2_output = self.expansive_block_2(eb1_output, cb3_output)
-        eb3_output = self.expansive_block_3(eb2_output, cb2_output)
-        eb4_output = self.expansive_block_4(eb3_output, cb1_output)
+        eb1_output = self.expansive_block_1(cb5_output, cb4_output_copy)
+        eb2_output = self.expansive_block_2(eb1_output, cb3_output_copy)
+        eb3_output = self.expansive_block_3(eb2_output, cb2_output_copy)
+        eb4_output = self.expansive_block_4(eb3_output, cb1_output_copy)
 
         return self.classifier(eb4_output)
 

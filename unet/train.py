@@ -7,7 +7,6 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 from unet.model import Unet
-from unet.utils import crop
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -52,7 +51,7 @@ def __train(model: Unet,
             outputs = model(imgs)
 
             optimizer.zero_grad()
-            loss = loss_fn(outputs, crop(targets, outputs.shape))
+            loss = loss_fn(outputs, targets)
             loss.backward()
             optimizer.step()
 
@@ -77,7 +76,7 @@ def __validate(model: Unet,
 
             outputs = model(imgs)
 
-            loss = loss_fn(outputs, crop(targets, outputs.shape))
+            loss = loss_fn(outputs, targets)
 
             epoch_loss += loss.item()
 
