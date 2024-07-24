@@ -6,10 +6,10 @@ ___
 In order to compare performance of above implementations. There was utilized __Oxford III-T Pets__.
 As a metric mean Intersection over Union (mIOU) was utilized. Models are compared on validation sets:
 
-| __Loss Function__  | __U-Net V1__ | __U-Net V2__ |
-|--------------------|--------------|--------------|
-| Cross-entropy Loss | N/A          | N/A          |
-| Dice Loss          | N/A          | N/A          |
+| __Loss Function__  | __U-Net__ |
+|--------------------|-----------|
+| Cross-entropy Loss | 0.8341    |
+| Dice Loss          | 0.8108    |
 
 Training procedure:  
 - __Optimizer:__ SGD  
