@@ -2,10 +2,10 @@
 ___
 
 _SegNet_ is an example of CNN with encoder-decoder architecture. 
-The encoder part is identical to 13 convolutional layers in the VGG16 network. 
+The encoder part is identical to 13 convolutional layers of the VGG16 network. 
 The only difference is presence of _Batch Normalization_ layers between each _Conv_ Layer and _ReLU_ layer.
 The goal of decoder part is to decode encoded representation of input to final response - 
-classification of input image pixels to pre-defined labels. 
+classified input image pixels. 
 Its architecture is reversed compared to the encoder. 
 The only difference is that _Pooling_ layers are replaced by _Upsampling_ layers and 
 moved at the beginning of the blocks. Additionally, indices from _Pooling_ layers are 
@@ -18,8 +18,7 @@ Below picture depicts the original architecture of SegNet:
 ## Implementations
 ___
 ### SegNet v1
-The first implementation is reflection of original _SegNet_ definition from the paper. 
-In order to initialize layers of the encoder, weights of pretrained _VGG16_ model were utilized.
+The first implementation is reflection of original _SegNet_ definition from the original paper. 
 
 ### SegNet v2
 In the second implementation:  
@@ -44,15 +43,8 @@ As a metric mean Intersection over Union (mIOU) was utilized. Models are compare
 
 | __Loss Function__  | __SegNet V1__ | __SegNet V2__ | __SegNet V3__ |
 |--------------------|---------------|---------------|---------------| 
-| Cross-entropy Loss | 0.8736        | 0.8673        | N/A           | 
-| Dice Loss          | 0.8904        | N/A           | N/A           |
-
-Training procedure:  
-- __Optimizer:__ SGD  
-- __Learning rate:__ 1e-2
-- __Momentum:__ 0.9
-- __Weight decay:__ 1e-4
-- __Batch size:__ 40
+| Cross-entropy Loss | 0.8736        | 0.8673        | 0.8766        | 
+| Dice Loss          | 0.8904        | 0.8425        | 0.8362        |
 
 ## References
 ___
