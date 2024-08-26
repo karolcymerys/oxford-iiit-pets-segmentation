@@ -1,6 +1,16 @@
 # Fully Convolutional Network
 ___
 
+_Fully Convolutional Network_ (FCN) is next example of CNN utilized for Semantic Segmentation purposes.
+It employs _VGG-16_ layers to extract essential characteristics of provided input signal. 
+Next encoded input signal is enlarged with _deconvolution_ technique (by use of `ConvTranspose2d`).
+Final response is cropped to achieve the same size as input image.
+
+Below picture depicts the original architecture of FCN:
+
+![Architcture](pictures/architecture.png)
+
+
 ## Implementations
 ___
 
@@ -12,8 +22,8 @@ As a metric mean Intersection over Union (mIOU) was utilized. Models are compare
 
 | __Loss Function__  | __FCN-VGG-32s__ | __FCN-VGG-16s__ | __FCN-VGG-8s__ |
 |--------------------|-----------------|-----------------|----------------| 
-| Cross-entropy Loss | N/A             | N/A             | N/A            | 
-| Dice Loss          | N/A             | N/A             | N/A            |
+| Cross-entropy Loss | 0.8453          | 0.8833          | 0.8237         | 
+| Dice Loss          | 0.8888          | 0.9096          | 0.8213         |
 
 
 ## References

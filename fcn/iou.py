@@ -20,7 +20,7 @@ if __name__ == '__main__':
         target_types='segmentation',
         split='test'
     )
-    data_loader = DataLoader(dataset, batch_size=16)
+    data_loader = DataLoader(dataset, batch_size=8)
     num_labels = len(dataset.class_to_idx)
     model = FCN32s(num_labels).to(DEVICE)
     model.load_state_dict(torch.load('./weights/fcn_vgg_32s_weights_25_v1_cross_entropy_loss_oxford.pth'))
