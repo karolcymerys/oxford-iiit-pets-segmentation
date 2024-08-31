@@ -3,16 +3,12 @@ ___
 
 _Fully Convolutional Network_ (FCN) is next example of CNN utilized for Semantic Segmentation purposes.
 It employs _VGG-16_ layers to extract essential characteristics of provided input signal. 
-Next encoded input signal is enlarged with _deconvolution_ technique (by use of `ConvTranspose2d`).
-Final response is cropped to achieve the same size as input image.
+Next, encoded input signal is enlarged with _deconvolution_ technique (by using `ConvTranspose2d`).
+Finally, response is cropped to achieve the same size as the input image.
 
 Below picture depicts the original architecture of FCN:
 
 ![Architcture](pictures/architecture.png)
-
-
-## Implementations
-___
 
 
 ## Experiments

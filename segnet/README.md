@@ -3,7 +3,7 @@ ___
 
 _SegNet_ is an example of CNN with encoder-decoder architecture. 
 The encoder part is identical to 13 convolutional layers of the VGG16 network. 
-The only difference is presence of _Batch Normalization_ layers between each _Conv_ Layer and _ReLU_ layer.
+The only difference is addition of _Batch Normalization_ layers between each _Conv_ layers and _ReLU_ layers.
 The goal of decoder part is to decode encoded representation of input to final response - 
 classified input image pixels. 
 Its architecture is reversed compared to the encoder. 
@@ -14,27 +14,6 @@ forwarded to corresponding _Upsampling_ layers.
 Below picture depicts the original architecture of SegNet:
 
 ![Architcture](pictures/architecture.png)
-
-## Implementations
-___
-### SegNet v1
-The first implementation is reflection of original _SegNet_ definition from the original paper. 
-
-### SegNet v2
-In the second implementation:  
-- _Upsampling_ layers were replaced by _ConvTranspose_ layers  
-- indices from _Pooling_ layers are not forwarded to corresponding _ConvTranspose_ layers
-- to the input of decoder blocks, there was added signal from corresponding encoder blocks  
-
-In order to initialize layers of the encoder, weights of pretrained _VGG16_ model were utilized.
-
-### SegNet v3
-Compared to _SegNet v2_, in the third implementation:
-- the input of decoder blocks was concatenated with signal from corresponding encoder blocks  
-- size of decoder block channels were modified  
-
-
-In order to initialize layers of the encoder, weights of pretrained _VGG16_ model were utilized.
 
 ## Experiments
 

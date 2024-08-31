@@ -1,8 +1,8 @@
 # U-Net
 ___
 
-_U-Net_ is another example of CNN with encoder-decoder architecture.
-As a backbone network there are utilized layers of __VGG-16__ network, called _contracting blocks_.
+_U-Net_ is another example of CNN with encoder-decoder architecture used to solve Sematinc Segmentation problems.
+As a backbone network, there are utilized layers of __VGG-16__ network, called _contracting blocks_.
 Encoded input signal is next processed by _expansive blocks_. 
 Their goal is to enlarge signal produced by encoder layers.
 Additionally, signal from corresponding _contracting blocks_ is concatenated and passed as input to _expansive blocks_.
