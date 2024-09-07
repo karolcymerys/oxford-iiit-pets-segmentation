@@ -67,7 +67,7 @@ class DiceBCELoss(torch.nn.Module):
 
 
 class FocalLoss(torch.nn.Module):
-    def __init__(self, alpha: float = 0.8, gamma: float = 2.0) -> None:
+    def __init__(self, alpha: float = 0.25, gamma: float = 2.0) -> None:
         super(FocalLoss, self).__init__()
         self.bce_loss = BCELoss()
         self.alpha = alpha
@@ -79,7 +79,7 @@ class FocalLoss(torch.nn.Module):
 
 
 class TverskyLoss(torch.nn.Module):
-    def __init__(self, alpha: float = 0.5, beta: float = 0.5, epsilon: float = 1.0) -> None:
+    def __init__(self, alpha: float = 0.3, beta: float = 0.7, epsilon: float = 1.0) -> None:
         super(TverskyLoss, self).__init__()
         self.bce_loss = BCELoss()
         self.alpha = alpha
@@ -103,7 +103,7 @@ class TverskyLoss(torch.nn.Module):
 
 
 class FocalTverskyLoss(torch.nn.Module):
-    def __init__(self, alpha: float = 0.5, beta: float = 0.5, gamma: float = 1.0, epsilon: float = 1.0) -> None:
+    def __init__(self, alpha: float = 0.3, beta: float = 0.7, gamma: float = 4/3, epsilon: float = 1.0) -> None:
         super(FocalTverskyLoss, self).__init__()
         self.tversky_loss = TverskyLoss(alpha, beta, epsilon)
         self.gamma = gamma
