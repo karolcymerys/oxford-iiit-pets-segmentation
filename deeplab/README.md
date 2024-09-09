@@ -15,6 +15,19 @@ Below picture depicts the original architecture of _DeeplabV3_:
 
 ## Experiments
 
+In order to compare performance of above implementations. There was utilized __Oxford III-T Pets__.
+As a metric mean Intersection over Union (mIOU) was utilized. Models are compared on validation sets:
+
+| __Loss Function__  | __DeepLabV3__ |
+|--------------------|---------------|
+| Cross-entropy Loss | 0.8874        |
+| Dice Loss          | 0.8581        |
+| BCE Loss           | 0.7714        |
+| Dice BCE Loss      | 0.6639        |
+| Focal Loss         | 0.0632        |
+| Tversky Loss       | 0.8539        |
+| Focal Tversky Loss | 0.8534        |
+
 ## References
 ___
 [[1] Liang-Chieh Chen, George Papandreou, Iasonas Kokkinos, Kevin Murphy, Alan L. Yuille _DeepLab: Semantic Image Segmentation with Deep Convolutional Nets, Atrous Convolution, and Fully Connected CRFs_](https://arxiv.org/abs/1606.00915)  
