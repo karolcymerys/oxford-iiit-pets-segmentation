@@ -20,10 +20,15 @@ Below picture depicts the original architecture of SegNet:
 In order to compare performance of above implementations. There was utilized __Oxford III-T Pets__.
 As a metric mean Intersection over Union (mIOU) was utilized. Models are compared on validation sets:
 
-| __Loss Function__  | __SegNet V1__ | __SegNet V2__ | __SegNet V3__ |
-|--------------------|---------------|---------------|---------------| 
-| Cross-entropy Loss | 0.8736        | 0.8673        | 0.8766        | 
-| Dice Loss          | 0.8904        | 0.8425        | 0.8362        |
+| __Loss Function__  | __SegNet__ |
+|--------------------|------------|
+| Cross-entropy Loss | 0.8736     |
+| Dice Loss          | 0.8904     |
+| BCE Loss           | 0.5380     |
+| Dice BCE Loss      | 0.8782     |
+| Focal Loss         | 0.0292     |
+| Tversky Loss       | 0.8453     |
+| Focal Tversky Loss | 0.8312     |
 
 ## References
 ___
