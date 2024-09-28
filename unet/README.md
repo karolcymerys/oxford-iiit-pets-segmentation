@@ -28,10 +28,15 @@ Thanks to that, output signal contains tensor with the same size as provided inp
 In order to compare performance of above implementations. There was utilized __Oxford III-T Pets__.
 As a metric mean Intersection over Union (mIOU) was utilized. Models are compared on validation sets:
 
-| __Loss Function__  | __U-Net__ |
-|--------------------|-----------|
-| Cross-entropy Loss | 0.8341    |
-| Dice Loss          | 0.8108    |
+| __Loss Function__  | __U-Net v2__ |
+|--------------------|--------------|
+| Cross-entropy Loss | 0.8341       |
+| Dice Loss          | 0.8108       |
+| BCE Loss           | 0.7510       |
+| Dice BCE Loss      | 0.2849       |
+| Focal Loss         | 0.1177       |
+| Tversky Loss       | 0.8101       |
+| Focal Tversky Loss | 0.5839       |
 
 
 

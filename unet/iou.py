@@ -23,7 +23,7 @@ if __name__ == '__main__':
     data_loader = DataLoader(dataset, batch_size=16)
     num_labels = len(dataset.class_to_idx)
     model = Unet(num_labels).to(DEVICE)
-    model.load_state_dict(torch.load('./weights/unet_v2_weights_cross_entropy_loss_oxford.pth'))
+    model.load_state_dict(torch.load('weights/unet_weights_cross_entropy_loss_oxford.pth'))
 
     model = model.eval()
     loss_fn = IOULoss()
