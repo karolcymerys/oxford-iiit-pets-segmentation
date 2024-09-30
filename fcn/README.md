@@ -20,6 +20,11 @@ As a metric mean Intersection over Union (mIOU) was utilized. Models are compare
 |--------------------|-----------------|-----------------|----------------| 
 | Cross-entropy Loss | 0.8453          | 0.8833          | 0.8237         | 
 | Dice Loss          | 0.8888          | 0.9096          | 0.8213         |
+| BCE Loss           | 0.8254          | 0.8712          | 0.8274         |
+| Dice BCE Loss      | 0.7983          | 0.8486          | 0.8091         |
+| Focal Loss         | 0.8269          | 0.8455          | 0.5308         |
+| Tversky Loss       | 0.8454          | 0.9035          | 0.8589         |
+| Focal Tversky Loss | 0.8353          | 0.9044          | 0.5838         |
 
 
 ## References

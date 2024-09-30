@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 import transforms
 from loss_functions import IOULoss
-from model import FCN32s
+from model import FCN16s
 
 DEVICE = 'cuda:0'
 
@@ -22,8 +22,8 @@ if __name__ == '__main__':
     )
     data_loader = DataLoader(dataset, batch_size=8)
     num_labels = len(dataset.class_to_idx)
-    model = FCN32s(num_labels).to(DEVICE)
-    model.load_state_dict(torch.load('./weights/fcn_vgg_32s_weights_25_v1_cross_entropy_loss_oxford.pth'))
+    model = FCN16s(num_labels).to(DEVICE)
+    model.load_state_dict(torch.load('weights/fcn_vgg_16s_weights_dice_loss_oxford.pth'))
 
     model = model.eval()
     loss_fn = IOULoss()
