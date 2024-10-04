@@ -6,7 +6,7 @@ from torch import log_softmax
 from torch.utils.data import DataLoader
 from torchvision import transforms
 
-from model import FCN32s
+from fcn.model import FCN32s
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 

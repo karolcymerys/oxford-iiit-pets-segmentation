@@ -2,12 +2,12 @@ from torch.utils.data import DataLoader, Subset
 from torchvision.datasets import OxfordIIITPet
 
 import transforms
-from loss_functions import DiceLoss
-from segnet.modelv2 import SegNet
-from segnet.train import train
+from loss_functions import CrossEntropyLossWrapper, DiceLoss, BCELoss, DiceBCELoss, FocalLoss, TverskyLoss, FocalTverskyLoss
+from fcn.model import FCN16s
+from fcn.train import train
 
 DEVICE = 'cuda:0'
-BATCH_SIZE = 32
+BATCH_SIZE = 12
 
 if __name__ == '__main__':
     dataset = OxfordIIITPet(
@@ -27,7 +27,7 @@ if __name__ == '__main__':
     train_data_loader = DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=True)
     validation_data_loader = DataLoader(validation_set, batch_size=8)
     num_labels = len(dataset.class_to_idx)
-    model = SegNet(num_labels)
+    model = FCN16s(num_labels)
     model.init_weights()
     model = model.to(DEVICE)
 
@@ -35,7 +35,7 @@ if __name__ == '__main__':
         model,
         train_data_loader,
         validation_data_loader,
-        DiceLoss(),  # CustomCrossEntropyLoss()
-        'dice_loss_oxford',
+        DiceLoss(),
+        'focal_loss_16s',
         device=DEVICE
     )
